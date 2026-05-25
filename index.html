@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech AI - سەرەکی</title>
+    <style>
+        /* ڕەنگێن پێشکەفتی (Light Mode) */
+        :root {
+            --gold-primary: #d4af37;
+            --gold-gradient: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa8f65 100%);
+            --dark-bg: #09090b;
+            
+            --light-bg: #D1EDED;
+            
+            --text-dark: #0f172a;
+            --card-bg: #C2EDED;
+            --card-hover-bg: #d4f5f5;
+            --text-muted: #1e293b; 
+            
+            --section-grad: linear-gradient(180deg, #D1EDED 0%, #b8dbdb 100%);
+            
+            --shadow-lux: 0 15px 35px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.03);
+            --shadow-glow: 0 10px 30px rgba(108, 184, 184, 0.3);
+            --card-border: 1px solid rgba(108, 184, 184, 0.4);
+            
+            --transition-speed: 0.6s;
+
+            --wave-1: rgba(209, 237, 237, 0.4);
+            --wave-2: rgba(209, 237, 237, 0.7);
+            --wave-3: #D1EDED;
+        }
+
+        /* ڕەنگێن نوو بۆ دۆخێ شەڤێ (Dark Mode) */
+        [data-theme="dark"] {
+            --light-bg: #003C5E; 
+            --text-dark: #F0F3F5; 
+            --card-bg: #04486E; 
+            --card-hover-bg: #055683; 
+            --text-muted: #F0F3F5; 
+            --section-grad: linear-gradient(180deg, #003C5E 0%, #002b44 100%);
+            
+            /* ستایلێ دەوربەر و سێبەرا لۆکس بۆ پەنجەرەیان ل دۆخێ شەڤێ */
+            --shadow-lux: 0 20px 40px rgba(0, 0, 0, 0.3);
+            --shadow-glow: 0 0 30px rgba(5, 86, 131, 0.8), 0 10px 20px rgba(0, 0, 0, 0.4);
+            --card-border: 1px solid rgba(240, 243, 245, 0.15);
+
+            --wave-1: rgba(0, 60, 94, 0.4);
+            --wave-2: rgba(0, 60, 94, 0.7);
+            --wave-3: #003C5E;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            transition: background-color var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1), color var(--transition-speed) ease;
+        }
+
+        /* ناڤبەر (Navbar) */
+        nav {
+            background-color: rgba(9, 9, 11, 0.9);
+            border-bottom: none; 
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 28px;
+            font-weight: 900;
+            text-decoration: none;
+            letter-spacing: 1.5px;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover { transform: scale(1.05); }
+
+        .theme-toggle-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(214, 175, 55, 0.4);
+            color: var(--gold-primary);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 10px 18px;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .theme-toggle-btn:hover {
+            background: var(--gold-gradient);
+            color: #000;
+            border-color: transparent;
+            transform: scale(1.08) rotate(15deg);
+            box-shadow: 0 0 15px rgba(214, 175, 55, 0.4);
+        }
+
+        /* پشکا سەرەکی (Hero) */
+        .hero-container {
+            position: relative;
+            background-color: transparent;
+            overflow: hidden;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .hero {
+            background: url('https://i.postimg.cc/Z5cwzjJg/photo-2026-05-23-18-37-47.jpg') no-repeat center center/cover;
+            height: 78vh;
+            width: 100%;
+            filter: none;
+        }
+
+        .wave-wrapper {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+
+        .wave-wrapper svg {
+            position: relative;
+            display: block;
+            width: 200%;
+            height: 80px;
+        }
+
+        .wave-1 { fill: var(--wave-1); animation: move-wave-reverse 16s linear infinite; }
+        .wave-2 { fill: var(--wave-2); animation: move-wave 11s linear infinite; }
+        .wave-3 { fill: var(--wave-3); animation: move-wave 6s linear infinite; }
+
+        @keyframes move-wave { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes move-wave-reverse { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+
+        /* پشکا دەربارەی مە */
+        .about-section {
+            padding: 100px 60px;
+            background-color: var(--light-bg);
+            transition: background-color var(--transition-speed) ease;
+        }
+
+        .about-container {
+            max-width: 1150px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 70px;
+        }
+
+        .about-content { flex: 1.5; }
+
+        .about-title {
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .about-title::after {
+            display: none; 
+        }
+
+        .about-text {
+            font-size: 25px;
+            line-height: 1.9;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .about-image-wrapper { flex: 1; display: flex; justify-content: flex-end; }
+
+        .clickable-img {
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+        }
+        .clickable-img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 25px rgba(214, 175, 55, 0.4);
+        }
+
+        .about-img {
+            max-width: 380px;
+            width: 100%;
+            height: auto;
+            border-radius: 40px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+            border: none; 
+        }
+
+        /* پشکا کار و خزمەتگوزاریان */
+        .services-section {
+            background: var(--section-grad);
+            padding: 80px 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 35px; 
+            align-items: center;
+            transition: background var(--transition-speed) ease;
+        }
+
+        /* چاککردن و جوانکردنا دەورۆبەرێن پەنجەرەیان */
+        .services-container {
+            max-width: 1000px;
+            width: 100%;
+            min-height: 150px; 
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 0px 30px 0px 0px; 
+            border-radius: 16px; /* زێدەکرنا قەوسیا کۆژان بۆ سەرنجڕاکێشیێ */
+            box-shadow: var(--shadow-lux);
+            border: var(--card-border); /* هێڵەکا نازک و مۆدێرن بۆ دەوربەران */
+            box-sizing: border-box;
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column; 
+            align-items: flex-start;
+            justify-content: center;
+            text-align: right;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease, box-shadow 0.5s ease, border-color 0.4s ease;
+        }
+
+        .services-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ئەنیمەیشنا سەرنجڕاکێش دەمێ ماوس دچیتە سەر پەنجەرێ */
+        .services-container:hover {
+            transform: translateY(-5px); /* بلندبوونا کێم بۆ دیاربوونا جوانیێ */
+            box-shadow: var(--shadow-glow);
+            background: var(--card-hover-bg);
+            border-color: rgba(240, 243, 245, 0.3);
+        }
+
+        .services-header {
+            display: flex;
+            flex-direction: row; 
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            min-height: 150px; 
+        }
+
+        .services-image-wrapper {
+            height: 100%;
+            min-height: 150px; 
+            flex: 0 0 150px;   
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px; 
+            box-sizing: border-box;
+        }
+
+        .services-img {
+            width: 100%;
+            height: 100%;
+            min-height: 130px; 
+            object-fit: cover;
+            border-radius: 12px; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .services-content {
+            display: flex;
+            flex-direction: row; 
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 25px; 
+        }
+
+        .services-title {
+            font-size: 24px; 
+            font-weight: 800;
+            margin: 0;
+            color: var(--text-dark); 
+        }
+
+        .services-description {
+            max-height: 0;
+            overflow: hidden;
+            width: 100%;
+            padding: 0 25px; 
+            box-sizing: border-box;
+            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+        }
+
+        .services-container.active {
+            padding-bottom: 25px;
+        }
+
+        .services-container.active .services-header {
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 5px;
+        }
+
+        .services-container.active .services-description {
+            max-height: 500px;
+            transition: max-height 0.7s cubic-bezier(1, 0, 1, 0);
+        }
+
+        .services-text {
+            font-size: 19px;
+            line-height: 1.8;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .view-btn {
+            background: #6CB8B8;
+            color: #ffffff;
+            border: none;
+            padding: 12px 32px; 
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(108, 184, 184, 0.2);
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .view-btn:hover { background: #5aa1a1; transform: scale(1.02); }
+
+        .demo-btn {
+            display: inline-block;
+            background: var(--dark-bg);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 30px;
+            font-size: 16px;
+            font-weight: 700;
+            border: 2px solid var(--dark-bg);
+            border-radius: 6px;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .demo-btn:hover {
+            background: var(--gold-gradient);
+            color: #000000;
+            border-color: transparent;
+        }
+
+        /* سیستمێ Lightbox */
+        .image-lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(9, 9, 11, 0.95);
+            backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .image-lightbox.open {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            max-width: 85%;
+            max-height: 85%;
+            border-radius: 16px;
+            border: none; 
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+            transform: scale(0.85);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+        }
+
+        .image-lightbox.open .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: #ffffff;
+            font-size: 50px;
+            font-weight: 300;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+            user-select: none;
+        }
+
+        .lightbox-close:hover {
+            color: var(--gold-primary);
+            transform: rotate(90deg);
+        }
+
+        /* بنپەڕ (Footer) */
+        footer {
+            background-color: var(--dark-bg);
+            color: #94a3b8;
+            padding: 70px 80px;
+            border-top: none; 
+        }
+
+        .footer-container {
+            max-width: 1150px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .footer-logo {
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .footer-info p {
+            margin: 12px 0;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .footer-img {
+            max-width: 140px;
+            border-radius: 20px;
+            border: none; 
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #1e293b;
+            font-size: 15px;
+            color: #475569;
+        }
+
+        /* رێکخستن بۆ مۆبایلان */
+        @media (max-width: 768px) {
+            nav { padding: 15px 25px; }
+            .logo { font-size: 24px; }
+            .hero { height: 50vh; }
+            .wave-wrapper svg { height: 55px; }
+            .about-section { padding: 60px 25px; }
+            .about-container, .footer-container { flex-direction: column; text-align: center; gap: 35px; }
+            .services-section { padding: 40px 15px; gap: 20px; }
+            .services-container { padding: 0px 15px 0px 0px; min-height: 110px; border-radius: 12px; }
+            .services-container:hover { transform: translateY(-3px); }
+            .services-header { height: auto; min-height: 110px; }
+            .services-image-wrapper { flex: 0 0 110px; min-height: 110px; padding: 6px; }
+            .services-img { min-height: 98px; border-radius: 10px; }
+            .services-content { padding: 0 15px; }
+            .services-title { font-size: 16px; }
+            .services-description { padding: 0 15px; }
+            footer { padding: 50px 25px; }
+            .lightbox-close { top: 20px; right: 25px; font-size: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="logo">Tech AI</a>
+        <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
+    </nav>
+
+    <div class="hero-container">
+        <section id="home" class="hero"></section>
+        <div class="wave-wrapper">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,32 C300,110 600,10 900,110 L1200,60 L2400,60 C2700,110 3000,10 3300,110 L3600,60 L3600,120 L0,120 Z" class="wave-1"></path>
+                <path d="M0,50 C400,10 700,100 1000,30 L1200,80 L2400,80 C2800,10 3100,100 3400,30 L3600,80 L3600,120 L0,120 Z" class="wave-2"></path>
+                <path d="M0,60 C300,5 600,115 900,40 L1200,90 L2400,90 C2700,5 3000,115 3300,40 L3600,90 L3600,120 L0,120 Z" class="wave-3"></path>
+            </svg>
+        </div>
+    </div>
+
+    <section id="about" class="about-section">
+        <div class="about-container">
+            <div class="about-content">
+                <h2 class="about-title">پەیجێ Tech AI</h2>
+                <p class="about-text">شارەزا د بواری سایت پڕۆفیشناڵ</p>
+            </div>
+            <div class="about-image-wrapper">
+                <img src="https://i.postimg.cc/Z5cwzjJg/photo-2026-05-23-18-37-47.jpg" alt="Tech AI Image" class="about-img clickable-img">
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services-section">
+        
+        <div class="services-container">
+            <div class="services-header">
+                <div class="services-image-wrapper">
+                    <img src="https://i.postimg.cc/Z5cwzjJg/photo-2026-05-23-18-37-47.jpg" alt="ڕیستۆرانت و کافێ" class="services-img clickable-img">
+                </div>
+                <div class="services-content">
+                    <h2 class="services-title">ئافاكرنا  ويب سايت مينو  خارنكه ه  كافي</h2>
+                    <button class="view-btn">بینن</button>
+                </div>
+            </div>
+            <div class="services-description">
+                <p class="services-text">
+                    ئەم ئامادەنە بۆ کاری دروست کردنی هەر وێب سایتەکی بۆ کاری تە وەک مێنۆ بۆ ڕیستۆرانت و کافێ ب بەرزترین کوالێتی و دیزاینەکێ سەردەم.
+                </p>
+                <a href="https://falahkurdishai-a11y.github.io/restandcafi/" target="_blank" class="demo-btn">ئەڤە ئێک ژ نموونەیێن مە یە</a>
+            </div>
+        </div>
+
+        <div class="services-container">
+            <div class="services-header">
+                <div class="services-image-wrapper">
+                    <img src="https://i.postimg.cc/Z5cwzjJg/photo-2026-05-23-18-37-47.jpg" alt="بایۆ لینک" class="services-img clickable-img">
+                </div>
+                <div class="services-content">
+                    <h2 class="services-title">ئافاكرنا  ويب سايت لينك بايو سوشيال ميديا</h2>
+                    <button class="view-btn">بینن</button>
+                </div>
+            </div>
+            <div class="services-description">
+                <p class="services-text">
+                    ئەم دیزاینا باشترین و جوانترین لاپەڕێن بایۆ (Bio Link) دکەین بۆ پەیج و سۆشیال میدیایا تە، دا کو هەموو لینک و کارێن تە ل بن ئێک چەتر بن ب شێوازەکێ لۆکس.
+                </p>
+                <a href="https://falahzakho.github.io/Tech_Ai-/" target="_blank" class="demo-btn">ئەڤە ئێک ژ وان نمونا یە</a>
+            </div>
+        </div>
+
+        <div class="services-container">
+            <div class="services-header">
+                <div class="services-image-wrapper">
+                    <img src="https://i.postimg.cc/Z5cwzjJg/photo-2026-05-23-18-37-47.jpg" alt="مالپەرێ مەوادا" class="services-img clickable-img">
+                </div>
+                <div class="services-content">
+                    <h2 class="services-title">ئافاكرنا مالبه ريت بروفيشنال</h2>
+                    <button class="view-btn">بینن</button>
+                </div>
+            </div>
+            <div class="services-description">
+                <p class="services-text">
+                    دا خەلکەک زویتر بگەهیتە مەوادێ تە و بهایێ وی ب زانیت و ب ساناهی داخوازی بکەت ب ڕێکا سیستمەکێ دیجیتاڵی یێ پڕۆفیشناڵ.
+                </p>
+                <a href="https://falahzakho.github.io/Rest-/" target="_blank" class="demo-btn">ئەڤە ئێک ژ وان نمونا یە</a>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="image-lightbox" id="lightboxOverlay">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <img class="lightbox-content" id="lightboxTargetImg" src="" alt="Enlarged View">
+    </div>
+
+    <footer id="contact">
+        <div class="footer-container">
+            <div class="footer-info">
+                <div class="footer-logo">Tech AI</div>
+                <p>ناونیشان: Kurdistan - Zakho</p>
+                <p>تەلەفۆن: 7503793639</p>
+            </div>
+            <div class="footer-image-wrapper">
+                <img src="https://i.postimg.cc/Z5cwzjJg/photo-2026-05-23-18-37-47.jpg" alt="Tech AI Footer Logo" class="footer-img clickable-img">
+            </div>
+        </div>
+        <div class="copyright">
+            هەموو ماف دپاراستینە © 2026 Tech AI
+        </div>
+    </footer>
+
+    <script>
+        // دۆخێ شەڤێ
+        const themeToggleBtn = document.getElementById('themeToggle');
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggleBtn.textContent = '🌙';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggleBtn.textContent = '☀️';
+            }
+        });
+
+        // ئەنیمەیشنا Scroll
+        const cards = document.querySelectorAll('.services-container');
+        const observerOptions = { root: null, threshold: 0.1 };
+
+        const cardObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        cards.forEach(card => cardObserver.observe(card));
+
+        // سیستمێ کلیک کرنا دوگمێ داخستن و بینین
+        const viewButtons = document.querySelectorAll('.view-btn');
+        viewButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const currentCard = e.target.closest('.services-container');
+                currentCard.classList.toggle('active');
+                
+                if (currentCard.classList.contains('active')) {
+                    e.target.textContent = 'داخستن';
+                    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                    e.target.style.background = isDark ? '#003C5E' : '#09090b';
+                } else {
+                    e.target.textContent = 'بینن';
+                    e.target.style.background = '#6CB8B8';
+                }
+            });
+        });
+
+        // پۆپ-ئەپ و مەزنکرنا وێنەی ب ئێک کلیک
+        const lightboxOverlay = document.getElementById('lightboxOverlay');
+        const lightboxTargetImg = document.getElementById('lightboxTargetImg');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const clickableImages = document.querySelectorAll('.clickable-img');
+
+        clickableImages.forEach(img => {
+            img.addEventListener('click', (e) => {
+                const srcLink = e.target.src;
+                lightboxTargetImg.src = srcLink;
+                lightboxOverlay.classList.add('open');
+            });
+        });
+
+        lightboxClose.addEventListener('click', () => {
+            lightboxOverlay.classList.remove('open');
+        });
+
+        lightboxOverlay.addEventListener('click', (e) => {
+            if (e.target === lightboxOverlay) {
+                lightboxOverlay.classList.remove('open');
+            }
+        });
+    </script>
+
+</body>
+</html>
